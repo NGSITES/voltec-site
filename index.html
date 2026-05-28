@@ -7,7 +7,6 @@
     
     <link rel="icon" type="image/png" sizes="512x512" href="logo-voltec.png">
 
-    <!-- Carregamento otimizado dos recursos principais -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -15,7 +14,6 @@
     <link rel="preload" as="image" href="volvo.png">
     <link rel="preload" as="image" href="daf.png">
     <link rel="preload" as="image" href="scania.png">
-    <!-- Primeiras fotos dos serviços: já ficam prontas para abrir mais rápido -->
     <link rel="preload" as="image" href="servicos/mecanica-pesada/01.png" fetchpriority="high">
     <link rel="preload" as="image" href="servicos/diagnostico/01.png" fetchpriority="high">
     <link rel="preload" as="image" href="servicos/preventiva/01.png" fetchpriority="high">
@@ -409,7 +407,7 @@
         .brand-box:hover { transform: scale(1.15) translateY(-10px); filter: grayscale(0) brightness(1.2); opacity: 1; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
         .brand-box img { width: 100%; height: auto; display: block; }
 
-        /* --- VÍDEO FINAL --- */
+        /* --- IMAGEM FINAL (Substituiu o VÍDEO) --- */
         .bottom-video-wrapper { position: relative; width: 100%; background-color: var(--bg-dark); }
         .bottom-bg-video {
             position: sticky; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: 0; opacity: 0.10; 
@@ -898,9 +896,7 @@
 
     <div class="bottom-video-wrapper">
         
-        <video class="bottom-bg-video" autoplay loop muted playsinline preload="metadata">
-            <source src="video-fundo-final.mp4" type="video/mp4">
-        </video>
+        <img class="bottom-bg-video" src="imagem fundo video.png" alt="Fundo">
 
         <div class="bottom-content-layer">
             
