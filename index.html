@@ -262,23 +262,24 @@
             justify-content: center;
         }
 
-        /* Fotos dos serviços: a caixa acompanha a proporção real de cada imagem */
+        /* Fotos dos serviços: sem 340px, tamanho automático por tela e imagem sempre inteira */
         .slideshow-box {
             width: min(100%, 500px);
-            height: auto;
+            height: clamp(210px, 30vw, 340px);
             min-height: 0;
-            max-height: none;
-            aspect-ratio: var(--foto-ratio, 16 / 9);
+            max-height: min(50vh, 340px);
             justify-self: center;
             align-self: center;
-            background: transparent;
+            background: #000;
             border-radius: clamp(18px, 3vw, 28px);
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255,140,0,0.3);
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: block;
-            transition: aspect-ratio 0.35s ease, width 0.35s ease;
+        }
+        @supports (height: 1dvh) {
+            .slideshow-box { max-height: min(50dvh, 340px); }
         }
         .slideshow-box::before {
             content: 'Carregando fotos...';
@@ -311,7 +312,7 @@
             height: 100%;
             object-fit: contain;
             object-position: center center;
-            background: transparent;
+            background: #000;
             opacity: 0;
             transform: none;
             transition: opacity 0.65s ease-in-out;
@@ -347,8 +348,11 @@
             }
             .slideshow-box {
                 width: min(100%, 600px);
-                height: auto;
-                max-height: none;
+                height: clamp(205px, 48vw, 330px);
+                max-height: min(50vh, 330px);
+            }
+            @supports (height: 1dvh) {
+                .slideshow-box { max-height: min(50dvh, 330px); }
             }
             .text-box-large {
                 min-height: auto;
@@ -361,9 +365,9 @@
             .service-card.open .expanded-layout { gap: 20px; }
             .slideshow-box {
                 width: 100%;
-                height: auto;
+                height: clamp(180px, 62vw, 280px);
                 min-height: 0;
-                max-height: none;
+                max-height: 280px;
                 border-radius: 22px;
             }
             .expanded-layout { padding-top: 25px; }
@@ -525,18 +529,229 @@
 
         @media (max-width: 420px) {
             .slideshow-box {
-                height: auto;
-                max-height: none;
+                height: clamp(165px, 68vw, 245px);
+                max-height: 245px;
                 border-radius: 18px;
             }
         }
+
+
+        /* ========================================================= */
+        /* --- VERSÃO REFINADA: visual mais limpo, responsivo e sem tarjas --- */
+        /* ========================================================= */
+        :root {
+            --panel: rgba(12, 14, 18, 0.72);
+            --line: rgba(255, 255, 255, 0.08);
+            --muted: #b8b8b8;
+            --radius-lg: 32px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(255,140,0,0.11), transparent 30%),
+                radial-gradient(circle at 85% 8%, rgba(255,255,255,0.045), transparent 28%),
+                linear-gradient(180deg, #030405 0%, #08090b 45%, #030405 100%);
+        }
+
+        .container > nav {
+            margin-top: 14px;
+            border: 1px solid rgba(255,140,0,0.12);
+            border-radius: 28px;
+            padding: 12px 22px;
+        }
+
+        .logo-nav img { height: 118px; }
+
+        .nav-links a {
+            font-size: 14px;
+            padding: 10px 0;
+        }
+
+        .hero {
+            min-height: calc(100vh - 80px);
+            padding: 105px 0 95px;
+        }
+
+        .hero h1 {
+            max-width: 1050px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.05;
+        }
+
+        .hero p {
+            margin-bottom: 28px;
+            color: #ffad42;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 46px;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 54px;
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+        }
+
+        .btn-primary {
+            color: #071006;
+            background: linear-gradient(135deg, var(--wa-green), #7af2a0);
+            box-shadow: 0 18px 42px rgba(37,211,102,0.25);
+        }
+
+        .btn-secondary {
+            color: var(--white);
+            border: 1px solid rgba(255,140,0,0.38);
+            background: rgba(255,140,0,0.08);
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            transform: translateY(-4px);
+        }
+
+        .video-box {
+            max-width: 980px;
+            border-radius: var(--radius-lg);
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 780px;
+            margin: 0 auto;
+            padding-top: 95px;
+        }
+
+        .section-heading span {
+            color: var(--accent);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            margin-top: 12px;
+            font-size: clamp(30px, 5vw, 54px);
+            line-height: 1.05;
+        }
+
+        .section-heading p {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .servicos-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-top: 55px;
+            gap: 26px;
+        }
+
+        .service-card {
+            padding: 46px 30px;
+            min-height: 310px;
+            background: linear-gradient(180deg, rgba(22,24,29,0.78), rgba(8,9,11,0.72));
+            border-color: rgba(255,255,255,0.075);
+        }
+
+        .service-card h3 { letter-spacing: 1.6px; }
+
+        .service-card.open {
+            padding: clamp(28px, 4vw, 46px);
+        }
+
+        .service-card.open .expanded-layout {
+            grid-template-columns: minmax(280px, 0.95fr) minmax(280px, 1.05fr);
+            align-items: stretch;
+        }
+
+        .slideshow-box {
+            width: 100%;
+            height: auto !important;
+            max-height: none !important;
+            aspect-ratio: var(--foto-ratio, 16 / 10);
+            background: linear-gradient(135deg, rgba(255,140,0,0.08), rgba(255,255,255,0.025));
+            border-color: rgba(255,140,0,0.35);
+            transition: aspect-ratio 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .slideshow-box img {
+            background: transparent !important;
+            object-fit: contain;
+        }
+
+        .text-box-large {
+            min-height: auto;
+            background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(0,0,0,0.20));
+            border-color: rgba(255,140,0,0.20);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .agendamento-container,
+        .info-box,
+        .about-card {
+            background: linear-gradient(180deg, rgba(18,20,25,0.82), rgba(7,8,10,0.76));
+            border-color: var(--line);
+        }
+
+        input, select, textarea { min-height: 56px; }
+
+        @media (max-width: 1050px) {
+            .servicos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .service-card.open .expanded-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            .container > nav {
+                margin-top: 8px;
+                border-radius: 22px;
+            }
+            .logo-nav img { height: 86px; }
+            .hero { padding-top: 78px; }
+            .hero-actions { margin-bottom: 34px; }
+            .btn-primary, .btn-secondary { width: min(100%, 330px); }
+            .section-heading { padding-top: 70px; }
+            .servicos-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 520px) {
+            .hero p { letter-spacing: 3px; }
+            .about-section, .agendamento-section { padding: 80px 0; }
+            .service-card { padding: 34px 20px; }
+        }
+
     </style>
 </head>
 <body>
 
     <img src="logo-voltec.png" alt="Fundo" class="bg-fixed-logo" loading="eager" decoding="async" fetchpriority="high">
 
-    <a href="https://wa.me/5541995265253" class="wa-float" target="_blank">
+    <a href="https://wa.me/5541995265253" class="wa-float" target="_blank" rel="noopener" aria-label="Falar com a Voltec pelo WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -567,6 +782,10 @@
         <div class="hero-content container reveal">
             <h1>Mecatrônica Diesel de Alta Precisão</h1>
             <p>TECNOLOGIA E CONFIANÇA PARA O SEU PESADO</p>
+            <div class="hero-actions">
+                <a href="#agendar" class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Agendar atendimento</a>
+                <a href="#servicos" class="btn-secondary"><i class="fa-solid fa-screwdriver-wrench"></i> Ver serviços</a>
+            </div>
             <div class="video-box">
                 <video controls autoplay muted loop playsinline preload="auto" poster="logo-voltec.png">
                     <source src="video01.mp4" type="video/mp4">
@@ -587,13 +806,18 @@
                 <div class="about-card">
                     <h2><i class="fa-brands fa-instagram"></i>SIGA A VOLTEC</h2>
                     <p>Acompanhe nosso trabalho, equipe e resultados diários diretamente no nosso Instagram oficial.</p>
-                    <a href="https://www.instagram.com/voltecmecatronica" class="btn-insta" target="_blank">VER INSTAGRAM REELS</a>
+                    <a href="https://www.instagram.com/voltecmecatronica" class="btn-insta" target="_blank" rel="noopener">VER INSTAGRAM REELS</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="container" id="servicos">
+    <section class="container services-section" id="servicos">
+        <div class="section-heading reveal">
+            <span>Especialidades</span>
+            <h2>Serviços</h2>
+            <p>Clique em um serviço para ver fotos reais da oficina e detalhes do atendimento.</p>
+        </div>
         <div class="servicos-grid">
             
             <div class="service-card reveal" onclick="toggleServico(this)" onkeydown="acionarServicoPeloTeclado(event, this)" role="button" tabindex="0" aria-expanded="false" data-folder="mecanica-pesada" data-fotos="8">
@@ -788,18 +1012,17 @@
 
             function configurarImagem(img, prioridade = 'low') {
                 img.decoding = 'async';
-                img.sizes = '(max-width: 800px) 92vw, (max-width: 1100px) 640px, 540px';
+                img.sizes = '(max-width: 900px) 92vw, (max-width: 1200px) 650px, 560px';
                 if ('fetchPriority' in img) img.fetchPriority = prioridade;
             }
 
-            function ajustarTamanhoDaCaixaPelaImagem(img) {
+            function ajustarCaixaPelaImagem(img) {
                 const container = img.closest('.slideshow-box');
                 if (!container || !img.naturalWidth || !img.naturalHeight) return;
 
-                container.style.setProperty(
-                    '--foto-ratio',
-                    `${img.naturalWidth} / ${img.naturalHeight}`
-                );
+                const ratio = img.naturalWidth / img.naturalHeight;
+                const ratioLimitado = Math.min(Math.max(ratio, 0.75), 2.15);
+                container.style.setProperty('--foto-ratio', ratioLimitado.toFixed(4));
             }
 
             function preCarregarImagem(src, prioridade = 'low') {
@@ -848,17 +1071,16 @@
                     const container = img.closest('.slideshow-box');
                     img.dataset.carregada = 'true';
 
-                    if (container) {
-                        container.classList.remove('sem-imagem');
-                        container.classList.add('tem-imagem');
+                    if (!container) return;
 
-                        const existeFotoVisivelCarregada = container.querySelector('img.show[data-carregada="true"]');
+                    container.classList.remove('sem-imagem');
+                    container.classList.add('tem-imagem');
 
-                        if (img.classList.contains('show') || !existeFotoVisivelCarregada) {
-                            container.querySelectorAll('img.show').forEach(foto => foto.classList.remove('show'));
-                            img.classList.add('show');
-                            ajustarTamanhoDaCaixaPelaImagem(img);
-                        }
+                    const existeFotoVisivelCarregada = container.querySelector('img.show[data-carregada="true"]');
+                    if (img.classList.contains('show') || !existeFotoVisivelCarregada) {
+                        container.querySelectorAll('img.show').forEach(foto => foto.classList.remove('show'));
+                        img.classList.add('show');
+                        ajustarCaixaPelaImagem(img);
                     }
                 };
 
@@ -891,17 +1113,13 @@
             function preCarregarFotosDosServicos() {
                 const cards = Array.from(document.querySelectorAll('.service-card[data-folder][data-fotos]'));
 
-                // A primeira foto já fica pronta em todos os serviços para abrir rápido no mobile e no computador.
                 cards.forEach(prepararPrimeiraFoto);
-
-                // A segunda foto também recebe prioridade para o carrossel não começar travando.
                 cards.forEach(card => {
                     const pasta = card.getAttribute('data-folder');
                     const quantidade = Number(card.getAttribute('data-fotos') || 0);
                     if (pasta && quantidade >= 2) preCarregarFotoServico(pasta, 2, 'high');
                 });
 
-                // As demais fotos entram em blocos pequenos para não pesar o carregamento inicial da página.
                 const restantes = [];
                 cards.forEach(card => {
                     const pasta = card.getAttribute('data-folder');
@@ -914,15 +1132,12 @@
                     const bloco = restantes.slice(indice, indice + 4);
                     bloco.forEach(item => preCarregarFotoServico(item.pasta, item.indice, 'low'));
                     indice += bloco.length;
-                    if (indice < restantes.length) setTimeout(carregarProximoBloco, 120);
+                    if (indice < restantes.length) setTimeout(carregarProximoBloco, 140);
                 }
 
-                const iniciar = () => setTimeout(carregarProximoBloco, 120);
-                if ('requestIdleCallback' in window) {
-                    requestIdleCallback(iniciar, { timeout: 1800 });
-                } else {
-                    window.addEventListener('load', iniciar, { once: true });
-                }
+                const iniciar = () => setTimeout(carregarProximoBloco, 180);
+                if ('requestIdleCallback' in window) requestIdleCallback(iniciar, { timeout: 1800 });
+                else window.addEventListener('load', iniciar, { once: true });
             }
 
             if (document.readyState === 'loading') {
@@ -933,6 +1148,9 @@
 
             const formAgendamento = document.getElementById('agendamentoForm');
             if (formAgendamento) {
+                const campoData = document.getElementById('data');
+                if (campoData) campoData.min = new Date().toISOString().split('T')[0];
+
                 formAgendamento.addEventListener('submit', function(e) {
                     e.preventDefault();
 
@@ -940,10 +1158,10 @@
                         `*Cliente:* ${document.getElementById('nome').value}\n` +
                         `*Telefone:* ${document.getElementById('telefone').value}\n` +
                         `*Caminhão:* ${document.getElementById('caminhao').value}\n` +
-                        `*Placa:* ${document.getElementById('placa').value}\n` +
+                        `*Placa:* ${document.getElementById('placa').value || 'Não informado'}\n` +
                         `*Serviço:* ${document.getElementById('servico').value}\n` +
                         `*Data:* ${document.getElementById('data').value} (${document.getElementById('periodo').value})\n` +
-                        `*Obs:* ${document.getElementById('observacoes').value}`;
+                        `*Obs:* ${document.getElementById('observacoes').value || 'Sem observações'}`;
 
                     window.open(`https://wa.me/5541995265253?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
                 });
@@ -963,14 +1181,6 @@
                 if (!pasta || !container) return;
 
                 prepararPrimeiraFoto(card);
-
-                const fotoVisivel = container.querySelector('img.show[data-carregada="true"]') || container.querySelector('img[data-carregada="true"]');
-                if (fotoVisivel) {
-                    container.querySelectorAll('img.show').forEach(foto => foto.classList.remove('show'));
-                    fotoVisivel.classList.add('show');
-                    ajustarTamanhoDaCaixaPelaImagem(fotoVisivel);
-                }
-
                 if (container.dataset.todasFotos === 'true') return;
                 container.dataset.todasFotos = 'true';
 
@@ -995,7 +1205,7 @@
                     indiceAtual = (indiceAtual + 1) % imagens.length;
                     const proximaFoto = imagens[indiceAtual];
 
-                    ajustarTamanhoDaCaixaPelaImagem(proximaFoto);
+                    ajustarCaixaPelaImagem(proximaFoto);
                     imagens.forEach(foto => foto.classList.remove('show'));
                     proximaFoto.classList.add('show');
                 }, 4200);
@@ -1016,7 +1226,10 @@
                     cardClicado.setAttribute('aria-expanded', 'true');
 
                     inserirFotosRestantes(cardClicado);
-                    iniciarLoopDeFotos(cardClicado.querySelector('.slideshow-box'));
+                    const container = cardClicado.querySelector('.slideshow-box');
+                    const fotoVisivel = container && container.querySelector('img.show[data-carregada="true"]');
+                    if (fotoVisivel) ajustarCaixaPelaImagem(fotoVisivel);
+                    iniciarLoopDeFotos(container);
 
                     setTimeout(() => {
                         cardClicado.scrollIntoView({ behavior: 'smooth', block: 'center' });
