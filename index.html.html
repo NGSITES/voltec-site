@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltec Mecatrônica | Diesel de Alta Performance</title>
+    
+    <link rel="icon" type="image/png" sizes="512x512" href="logo-voltec.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #030405; 
+            --card-bg: rgba(15, 17, 20, 0.65); 
+            --accent: #ff8c00; 
+            --accent-hover: #ffaa33;
+            --accent-glow: rgba(255, 140, 0, 0.3);
+            --white: #ffffff;
+            --wa-green: #25d366;
+            --wa-green-hover: #1eb954;
+        }
+
+        /* --- SCROLLBAR CUSTOMIZADA --- */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--white); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            line-height: 1.7; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        h1, h2, h3, h4 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 3px; }
+
+        /* --- ANIMAÇÕES DE REVELAÇÃO --- */
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.98); transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* --- LOGO FIXA NO FUNDO --- */
+        .bg-fixed-logo {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%; opacity: 0.03; filter: blur(20px); z-index: -1; pointer-events: none;
+        }
+
+        .container { max-width: 1250px; margin: 0 auto; padding: 0 30px; position: relative; }
+
+        /* --- NAVEGAÇÃO PREMIUM --- */
+        nav {
+            padding: 20px 0; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(3, 4, 5, 0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        /* --- AUMENTADO PARA 120%: Altura de 140px para 168px --- */
+        .logo-nav img { height: 168px; width: auto; transition: transform 0.4s ease; filter: drop-shadow(0 0 15px rgba(255,140,0,0.2)); }
+        .logo-nav:hover img { transform: scale(1.05); }
+        
+        /* --- AUMENTADO PARA 120%: Tamanho da letra (font-size) de 14px para 17px --- */
+        .nav-links a { 
+            color: var(--white); text-decoration: none; margin-left: 50px; font-size: 17px; 
+            font-weight: 700; font-family: 'Orbitron'; transition: all 0.4s ease; opacity: 0.7; 
+            letter-spacing: 2px; position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -8px; left: 0;
+            background-color: var(--accent); transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .nav-links a:hover { opacity: 1; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- HERO (CINEMATOGRÁFICA) --- */
+        .hero { position: relative; padding: 150px 0; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-dark) 90%);
+            z-index: 2; pointer-events: none;
+        }
+
+        .marcas-bg-carousel { position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; display: flex; align-items: center; z-index: 1; opacity: 0.7; pointer-events: none; }
+        .marcas-bg-track { display: flex; align-items: center; white-space: nowrap; animation: rolarInfinita 40s linear infinite; }
+        .marcas-bg-carousel img { height: 500px; width: auto; margin: 0 180px; filter: grayscale(1) brightness(0.8); }
+        @keyframes rolarInfinita { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .hero-content { position: relative; z-index: 10; text-align: center; width: 100%; }
+        
+        .hero h1 { 
+            font-size: clamp(40px, 6.5vw, 75px); margin-bottom: 20px; font-weight: 900;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .hero p { color: var(--accent); font-weight: 700; letter-spacing: 12px; margin-bottom: 60px; text-shadow: 0 0 20px var(--accent-glow); }
+        
+        .video-box {
+            width: 100%; max-width: 1050px; margin: 0 auto;
+            border: 1px solid rgba(255,140,0,0.3); border-radius: 30px; overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 60px var(--accent-glow); 
+            background: #000; position: relative; z-index: 20;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .video-box:hover { transform: translateY(-10px); box-shadow: 0 50px 120px rgba(0,0,0,1), 0 0 80px var(--accent-glow); }
+        .video-box video { width: 100%; height: auto; display: block; filter: contrast(1.1) saturate(1.1); }
+
+        /* --- SOBRE A EMPRESA --- */
+        .about-section { padding: 120px 0; background: linear-gradient(to bottom, var(--bg-dark), #0a0b0d); position: relative; z-index: 30; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .about-card { 
+            background: var(--card-bg); padding: 60px; border-radius: 24px; 
+            border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); transition: 0.4s ease;
+        }
+        .about-card:hover { border-color: rgba(255,140,0,0.2); transform: translateY(-5px); }
+        .about-card h2 { font-size: 26px; margin-bottom: 30px; color: var(--accent); display: flex; align-items: center; gap: 15px; }
+        .about-card h2 i { font-size: 30px; filter: drop-shadow(0 0 10px var(--accent-glow)); }
+        .about-card p { color: #d1d1d1; font-size: 16px; margin-bottom: 15px; }
+        
+        .btn-insta { 
+            display: inline-flex; align-items: center; gap: 12px; padding: 18px 40px; 
+            background: transparent; border: 1px solid var(--accent); color: var(--accent); 
+            text-decoration: none; border-radius: 12px; font-family: 'Orbitron'; font-size: 13px; font-weight: 700; 
+            margin-top: 30px; transition: all 0.4s ease; position: relative; overflow: hidden;
+        }
+        .btn-insta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--accent); transition: all 0.4s ease; z-index: -1; }
+        .btn-insta:hover::before { left: 0; }
+        .btn-insta:hover { color: var(--bg-dark); box-shadow: 0 0 30px var(--accent-glow); border-color: transparent; }
+
+        /* --- SERVIÇOS --- */
+        .servicos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; margin-top: 80px; padding-bottom: 120px; }
+        
+        .service-card {
+            cursor: pointer; overflow: hidden; max-height: 420px; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex; flex-direction: column; align-items: center; background: var(--card-bg);
+            padding: 60px 40px; text-align: center; border-radius: 24px; border: 1px solid rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px); position: relative;
+        }
+
+        .service-card::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255,140,0,0.1), transparent 70%);
+            opacity: 0; transition: 0.6s ease; pointer-events: none;
+        }
+
+        .service-card:hover { border-color: rgba(255,140,0,0.4); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .service-card:hover::after { opacity: 1; }
+        .service-card i { font-size: 50px; color: var(--accent); margin-bottom: 30px; transition: transform 0.4s ease; }
+        
+        .service-card:hover i { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--accent-glow)); }
+        
+        .service-card h3 { font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,140,0,0.1); padding-bottom: 15px; width: 100%; }
+        .service-card p { font-size: 15px; color: #a0a0a0; line-height: 1.6; }
+
+        .service-card.open { grid-column: 1 / -1; max-height: 1200px; border-color: var(--accent); background: rgba(20, 22, 26, 0.9); transform: translateY(0); box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
+        .service-card.open > p { display: none; }
+        .service-card.open i { transform: scale(0.8); margin-bottom: 15px; animation-play-state: paused; }
+
+        .expanded-layout { display: none; opacity: 0; width: 100%; margin-top: 10px; padding-top: 40px; border-top: 1px solid rgba(255, 140, 0, 0.2); transition: opacity 0.6s ease; }
+        .service-card.open .expanded-layout { display: flex; flex-direction: row; gap: 50px; opacity: 1; }
+
+        /* --- EFEITO KEN BURNS NAS FOTOS --- */
+        .slideshow-box { flex: 2; height: 700px; background: #000; border-radius: 10px; position: relative; overflow: hidden; border: 1px solid rgba(255,140,0,0.3); box-shadow: 0 10px 50px rgba(0,0,0,0.5); }
+        .slideshow-box img { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
+            opacity: 0; transform: scale(1); transition: opacity 1.5s ease-in-out, transform 5s linear; 
+        }
+        .slideshow-box img.show { opacity: 1; transform: scale(1.08); }
+
+        .text-box-large { flex: 1; font-size: 22px; color: #fff; line-height: 1.8; text-align: left; display: flex; align-items: center; font-weight: 300; }
+
+        /* ========================================================= */
+        /* --- ANIMAÇÕES VIVAS DOS ÍCONES --- */
+        /* ========================================================= */
+        .fa-truck-pickup { animation: drive 2.5s ease-in-out infinite; }
+        .fa-microchip { animation: pulse-tech 3s ease-in-out infinite; }
+        .fa-sliders { animation: move-up-down 2.5s ease-in-out infinite; }
+        .fa-check-double { animation: pop 2s ease-in-out infinite; }
+        .fa-gauge-high { animation: ponteiro 1.5s ease-in-out infinite; transform-origin: bottom center; }
+        .fa-shield-virus { animation: pulse-tech 2.5s ease-in-out infinite; }
+        .fa-microscope { animation: tilt 3s ease-in-out infinite; transform-origin: bottom center; }
+        .fa-gears { animation: girar 6s linear infinite; }
+        .fa-bolt { animation: choque 1.2s infinite; }
+        .fa-wind { animation: blow 2s ease-in-out infinite; }
+        .fa-plug { animation: spark 2s ease-in-out infinite; }
+        .fa-droplet { animation: drop-fall 2.5s ease-in-out infinite; }
+
+        @keyframes drive { 0%, 100% { translate: 0 0; } 50% { translate: 4px -3px; } }
+        @keyframes girar { 0% { rotate: 0deg; } 100% { rotate: 360deg; } }
+        @keyframes blow { 0%, 100% { translate: 0 0; opacity: 1; } 50% { translate: 8px 0; opacity: 0.5; } }
+        @keyframes choque { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px var(--accent)); } 50% { opacity: 0.3; filter: none; } }
+        @keyframes ponteiro { 0%, 100% { rotate: -15deg; } 50% { rotate: 20deg; } }
+        @keyframes move-up-down { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+        @keyframes pulse-tech { 0%, 100% { scale: 1; } 50% { scale: 1.15; } }
+        @keyframes tilt { 0%, 100% { rotate: -5deg; } 50% { rotate: 5deg; } }
+        @keyframes pop { 0%, 100% { translate: 0 0; } 20% { translate: 0 -10px; } 40% { translate: 0 0; } }
+        @keyframes spark { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px transparent); } 50% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--accent)); } }
+        @keyframes drop-fall { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(8px) scale(1.1); filter: drop-shadow(0 0 10px rgba(0, 150, 255, 0.6)); color: #3498db;} }
+
+        @media (max-width: 800px) {
+            .service-card.open .expanded-layout { flex-direction: column; }
+            .slideshow-box { height: 280px; width: 100%; }
+        }
+
+        /* --- MARCAS NO MEIO --- */
+        .brands-middle-section { padding: 100px 0; background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(15,17,20,0.9), rgba(0,0,0,0.8)); position: relative; z-index: 50; border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .brands-grid { display: flex; justify-content: center; align-items: center; gap: 120px; flex-wrap: wrap; }
+        .brand-box { width: 300px; transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); filter: grayscale(1) brightness(0.7); opacity: 0.5; cursor: pointer; }
+        .brand-box:hover { transform: scale(1.15) translateY(-10px); filter: grayscale(0) brightness(1.2); opacity: 1; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
+        .brand-box img { width: 100%; height: auto; display: block; }
+
+        /* --- VÍDEO FINAL --- */
+        .bottom-video-wrapper { position: relative; width: 100%; background-color: var(--bg-dark); }
+        .bottom-bg-video {
+            position: sticky; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: 0; opacity: 0.25; 
+            pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+        .bottom-content-layer { position: relative; z-index: 10; margin-top: -100vh; }
+
+        /* --- AGENDAMENTO --- */
+        .agendamento-section { padding: 120px 0; }
+        .agendamento-container { 
+            background: rgba(10, 12, 15, 0.75); border-radius: 30px; padding: 70px; 
+            border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+        .agendamento-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 70px; }
+        .agendamento-text h2 { font-size: 32px; color: var(--accent); margin-bottom: 25px; text-shadow: 0 0 15px var(--accent-glow); }
+        .agendamento-text p { font-size: 18px; line-height: 1.8; color: #ddd; }
+        .agendamento-text ul { list-style: none; margin-top: 30px; }
+        .agendamento-text li { margin-bottom: 20px; display: flex; align-items: center; gap: 15px; color: #aaa; font-size: 16px; }
+        .agendamento-text li i { color: var(--accent); font-size: 20px; background: rgba(255,140,0,0.1); padding: 10px; border-radius: 50%; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .form-group label { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: block; letter-spacing: 1px; }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            color: white; padding: 18px 20px; border-radius: 12px; outline: none; font-family: 'Inter';
+            font-size: 15px; transition: all 0.3s ease; color-scheme: dark;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--accent); background: rgba(255,140,0,0.02); box-shadow: 0 0 20px rgba(255,140,0,0.15);
+        }
+        .form-group select option { background-color: #0a0c0f; color: #ffffff; font-size: 15px; }
+        
+        .btn-enviar {
+            grid-column: span 2; width: 100%; padding: 25px; background: var(--wa-green); color: white; border: none; border-radius: 12px;
+            font-size: 16px; font-weight: 900; cursor: pointer; font-family: 'Orbitron'; letter-spacing: 3px; 
+            display: flex; align-items: center; justify-content: center; gap: 15px; transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); text-transform: uppercase;
+        }
+        .btn-enviar i { font-size: 24px; }
+        .btn-enviar:hover { background: var(--wa-green-hover); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.5); }
+
+        /* --- CONTATO --- */
+        .info-box { background: rgba(10, 12, 15, 0.75); padding: 60px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px); margin-bottom: 40px; }
+        .info-item { display: flex; align-items: flex-start; gap: 25px; margin-bottom: 40px; }
+        .info-item i { color: var(--accent); font-size: 30px; width: 40px; text-align: center; filter: drop-shadow(0 0 10px var(--accent-glow)); }
+        .info-item h4 { font-size: 14px; color: var(--white); margin-bottom: 8px; opacity: 0.9; }
+        .info-item p, .info-item a { color: #aaa; font-size: 16px; text-decoration: none !important; line-height: 1.6; }
+        .remove-underline { color: var(--accent) !important; font-weight: 700; transition: 0.3s; }
+        .remove-underline:hover { text-shadow: 0 0 10px var(--accent-glow); color: #fff !important; }
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .map-wrapper { width: 100%; height: 500px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.5); filter: grayscale(0.5) contrast(1.1); transition: 0.5s; }
+        .map-wrapper:hover { filter: grayscale(0) contrast(1); }
+
+        .wa-float { position: fixed; bottom: 40px; right: 40px; background: var(--wa-green); width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; z-index: 1000; text-decoration: none; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); }
+        .wa-float:hover { transform: scale(1.15) rotate(-10deg); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6); }
+
+        footer { padding: 100px 0; background: #010101; text-align: center; border-top: 1px solid rgba(255,255,255,0.02); }
+        .footer-logo img { height: 160px; width: auto; margin-bottom: 40px; opacity: 0.8; transition: 0.3s; }
+        .footer-logo img:hover { opacity: 1; filter: drop-shadow(0 0 20px rgba(255,255,255,0.1)); }
+        footer p { color: #666; font-size: 14px; letter-spacing: 2px; }
+        
+        /* --- AJUSTES MOBILE EXTREMOS --- */
+        @media (max-width: 900px) {
+            .agendamento-grid, .about-grid { grid-template-columns: 1fr !important; gap: 40px; }
+            .form-grid { grid-template-columns: 1fr !important; }
+            .btn-enviar { grid-column: span 1 !important; }
+            .marcas-bg-carousel img { height: 200px !important; margin: 0 50px !important; }
+            .hero { min-height: 80vh; padding: 100px 0 60px 0; }
+            .hero h1 { font-size: 32px !important; }
+            .agendamento-container, .info-box, .about-card { padding: 40px 25px !important; }
+            .nav-links { display: none; }
+            
+            /* --- AUMENTADO PARA 120% no mobile: de 90px para 108px --- */
+            .logo-nav img { height: 108px; } 
+            
+            .service-card { padding: 40px 20px; }
+            .maps-grid { grid-template-columns: 1fr; }
+            .map-wrapper { height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="logo-voltec.png" alt="Fundo" class="bg-fixed-logo">
+
+    <a href="https://wa.me/5541995265253" class="wa-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <div class="container">
+        <nav class="reveal">
+            <a href="#" class="logo-nav"><img src="logo-voltec.png" alt="Voltec"></a>
+            <div class="nav-links">
+                <a href="#inicio">Início</a>
+                <a href="#empresa">Sobre</a>
+                <a href="#servicos">Serviços</a>
+                <a href="#agendar">Agendar</a>
+                <a href="#contato">Contato</a>
+            </div>
+        </nav>
+    </div>
+
+    <section class="hero" id="inicio">
+        <div class="marcas-bg-carousel">
+            <div class="marcas-bg-track">
+                <img src="volvo.png" alt="Volvo">
+                <img src="daf.png" alt="DAF">
+                <img src="scania.png" alt="Scania">
+                <img src="volvo.png" alt="Volvo">
+                <img src="daf.png" alt="DAF">
+                <img src="scania.png" alt="Scania">
+            </div>
+        </div>
+        <div class="hero-content container reveal">
+            <h1>Mecatrônica Diesel de Alta Precisão</h1>
+            <p>TECNOLOGIA E CONFIANÇA PARA O SEU PESADO</p>
+            <div class="video-box">
+                <video controls autoplay muted loop playsinline preload="auto" poster="logo-voltec.png">
+                    <source src="video01.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" id="empresa">
+        <div class="container reveal">
+            <div class="about-grid">
+                <div class="about-card">
+                    <h2><i class="fa-solid fa-gears"></i>A EMPRESA</h2>
+                    <p>No mercado desde 2011, foco em qualidade na manutenção de caminhões Diesel, diagnóstico de falhas e programação de parâmetros de alta complexidade.</p>
+                    <p>Oferecemos soluções fundamentais voltadas à máxima performance e satisfação total dos nossos clientes.</p>
+                </div>
+                <div class="about-card">
+                    <h2><i class="fa-brands fa-instagram"></i>SIGA A VOLTEC</h2>
+                    <p>Acompanhe nosso trabalho, equipe e resultados diários diretamente no nosso Instagram oficial.</p>
+                    <a href="https://www.instagram.com/voltecmecatronica" class="btn-insta" target="_blank">VER INSTAGRAM REELS</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="servicos">
+        <div class="servicos-grid">
+            
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="mecanica-pesada" data-fotos="8">
+                <i class="fa-solid fa-truck-pickup"></i><h3>Mecânica Pesada</h3>
+                <p>Especialistas em motores diesel de alta performance com ferramentaria de precisão.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Especialistas em motores diesel de alta performance com ferramentaria de precisão.</div>
+                </div>
+            </div>
+            
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="diagnostico" data-fotos="8">
+                <i class="fa-solid fa-microchip"></i><h3>Diagnóstico Avançado</h3>
+                <p>Leitura técnica de módulos e sensores utilizando scanners de última geração.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Leitura técnica de módulos e sensores utilizando scanners de última geração.</div>
+                </div>
+            </div>
+
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="preventiva" data-fotos="8">
+                <i class="fa-solid fa-shield-virus"></i><h3>Preventiva</h3>
+                <p>Revisões sistemáticas e calibração de sistemas para evitar paradas indesejadas.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Revisões sistemáticas e calibração de sistemas para evitar paradas indesejadas.</div>
+                </div>
+            </div>
+            
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="retifica" data-fotos="9">
+                <i class="fa-solid fa-gears"></i><h3>Retífica e Recondicionamento</h3>
+                <p>Reparo completo de motores, diferenciais e caixas de transmissão.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Reparo completo de motores, diferenciais e caixas de transmissão.</div>
+                </div>
+            </div>
+            
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="eletrica" data-fotos="7">
+                <i class="fa-solid fa-bolt"></i><h3>Eletrônica embarcada</h3>
+                <p>Reparo de chicotes, alternadores e sistemas de partida diesel.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Reparo de chicotes, alternadores e sistemas de partida diesel.</div>
+                </div>
+            </div>
+            
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="injecao-eletronica" data-fotos="7">
+                <i class="fa-solid fa-plug"></i><h3>Injeção eletrônica</h3>
+                <p>Manutenção técnica e verificação no sistema de injeção.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Manutenção técnica e verificação no sistema de injeção.</div>
+                </div>
+            </div>
+          
+            <div class="service-card reveal" onclick="toggleServico(this)" data-folder="arla32" data-fotos="2">
+                <i class="fa-solid fa-droplet"></i><h3>Sistema Arla 32 e catalisadores</h3>
+                <p>Manutenção em sistemas de catalizadores e validação no sistema Arla 32.</p>
+                <div class="expanded-layout">
+                    <div class="slideshow-box"></div>
+                    <div class="text-box-large">Manutenção em sistemas de catalizadores e validação no sistema Arla 32.</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="brands-middle-section reveal">
+        <div class="container">
+            <div class="brands-grid">
+                <div class="brand-box"><img src="volvo.png" alt="Volvo"></div>
+                <div class="brand-box"><img src="daf.png" alt="DAF"></div>
+                <div class="brand-box"><img src="scania.png" alt="Scania"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="bottom-video-wrapper">
+        
+        <video class="bottom-bg-video" autoplay loop muted playsinline>
+            <source src="video-fundo-final.mp4" type="video/mp4">
+        </video>
+
+        <div class="bottom-content-layer">
+            
+            <section class="agendamento-section" id="agendar">
+                <div class="container reveal">
+                    <div class="agendamento-container">
+                        <div class="agendamento-grid">
+                            <div class="agendamento-text">
+                                <h2>AGENDAMENTO</h2>
+                                <p>Agende seu atendimento de forma rápida e prática diretamente na nossa base de especialistas.</p>
+                                <ul>
+                                    <li><i class="fa-solid fa-check"></i> Escolha o serviço ideal</li>
+                                    <li><i class="fa-solid fa-check"></i> Defina a data e período</li>
+                                    <li><i class="fa-solid fa-check"></i> Finalize no WhatsApp instantaneamente</li>
+                                </ul>
+                            </div>
+                            <form id="agendamentoForm">
+                                <div class="form-grid">
+                                    <div class="form-group"><label>NOME COMPLETO</label><input type="text" id="nome" placeholder="Seu nome completo" required></div>
+                                    <div class="form-group"><label>TELEFONE (WHATSAPP)</label><input type="text" id="telefone" placeholder="(41) 99999-9999" required></div>
+                                    <div class="form-group"><label>VEÍCULO</label><input type="text" id="caminhao" placeholder="Ex: Volvo FH 540" required></div>
+                                    <div class="form-group"><label>PLACA</label><input type="text" id="placa" placeholder="ABC-1234"></div>
+                                    <div class="form-group full" style="grid-column: span 2;"><label>SERVIÇO NECESSÁRIO</label>
+                                        <select id="servico">
+                                            <option>Revisão Geral</option><option>Diagnóstico Eletrônico</option>
+                                            <option>Manutenção Preventiva</option><option>Câmbio Automatizado</option>
+                                            <option>Arla 32 / SCR</option><option>Sistemas de Freios</option>
+                                            <option>Elétrica</option><option>Injeção Eletrônica</option>
+                                            <option>Turbinas</option><option>Suspensão</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label>DATA DESEJADA</label><input type="date" id="data" required></div>
+                                    <div class="form-group"><label>PERÍODO</label><select id="periodo"><option>Manhã (08h - 12h)</option><option>Tarde (13h - 18h)</option></select></div>
+                                    <div class="form-group full" style="grid-column: span 2;"><textarea id="observacoes" rows="3" placeholder="Descreva brevemente o que está acontecendo com o caminhão..."></textarea></div>
+                                </div>
+                                <button type="submit" class="btn-enviar"><i class="fa-brands fa-whatsapp"></i> SOLICITAR ATENDIMENTO</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contato" class="container reveal">
+                <div class="info-box">
+                    <h2 style="margin-bottom: 45px; color: var(--accent); text-shadow: 0 0 15px var(--accent-glow);">CONTATO</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                        <div class="info-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div><h4>ENDEREÇO</h4><p>Rua Luiz Carlos Longo, 100<br>Jardim Itaqui, Campo Largo PR<br>CEP: 83604-580, Brasil</p></div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-phone"></i>
+                            <div><h4>TELEFONE / PLANTÃO</h4><a href="tel:+5541998267967" class="remove-underline">(41) 99826-7967<br>Clique para ligar (Plantão)</a></div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-brands fa-whatsapp" style="color:var(--wa-green); filter: drop-shadow(0 0 10px rgba(37,211,102,0.5));"></i>
+                            <div><h4>WHATSAPP OFICINA</h4><a href="https://wa.me/5541995265253" target="_blank" class="remove-underline">(41) 99526-5253<br>Clique e fale com a oficina</a></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="maps-grid">
+                    <div class="map-wrapper">
+                        <iframe src="https://maps.google.com/maps?q=Rua%20Luiz%20Carlos%20Longo,%20100,%20Jardim%20Itaqui,%20Campo%20Largo%20PR,%2083604-580&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="map-wrapper">
+                        <iframe src="https://gothru.co/PAVk8h58b?index=scene_24&hlookat=170&vlookat=-3&fov=120" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+            </section>
+
+        </div> 
+    </div> 
+    
+    <footer>
+        <div class="container">
+            <div class="footer-logo"><img src="logo-voltec.png" alt="Logo"></div>
+            <p>VOLTEC MECATRÔNICA DIESEL © 2026<br>TECNOLOGIA DE PONTA EM CAMPO LARGO / PR</p>
+        </div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { 
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active'); 
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        document.getElementById('agendamentoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msg = `*Agendamento Voltec*%0A%0A*Cliente:* ${document.getElementById('nome').value}%0A*Caminhão:* ${document.getElementById('caminhao').value}%0A*Placa:* ${document.getElementById('placa').value}%0A*Serviço:* ${document.getElementById('servico').value}%0A*Data:* ${document.getElementById('data').value} (${document.getElementById('periodo').value})%0A*Obs:* ${document.getElementById('observacoes').value}`;
+            window.open(`https://wa.me/5541995265253?text=${msg}`, '_blank');
+        });
+
+        function toggleServico(cardClicado) {
+            const jaEstavaAberto = cardClicado.classList.contains('open');
+
+            // Fecha todos os cartões que estejam abertos
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('open');
+            });
+
+            // Se não estava aberto, abre este e inicia o loop
+            if (!jaEstavaAberto) {
+                cardClicado.classList.add('open');
+                
+                // Vai buscar o nome da pasta e a quantidade de fotos do HTML
+                const pastaNome = cardClicado.getAttribute('data-folder');
+                const qtdFotos = parseInt(cardClicado.getAttribute('data-fotos')) || 2; 
+                
+                const caixaFotos = cardClicado.querySelector('.slideshow-box');
+
+                // Só inicia as fotos se a caixa ainda estiver vazia
+                if (caixaFotos && caixaFotos.children.length === 0) {
+                    iniciarLoopDeFotos(caixaFotos, pastaNome, qtdFotos);
+                }
+                
+                // Rolagem suave
+                setTimeout(() => {
+                    cardClicado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            }
+        }
+
+        function iniciarLoopDeFotos(container, pasta, quantidade) {
+            // Este ciclo "for" vai rodar o número de vezes que definiste no HTML
+            for (let i = 1; i <= quantidade; i++) {
+                const img = document.createElement('img');
+                img.src = `servicos/${pasta}/0${i}.png`;
+                
+                // Apenas a primeira imagem começa visível
+                if (i === 1) img.classList.add('show');
+                container.appendChild(img);
+            }
+
+            // O carrossel automático
+            let indiceAtual = 0;
+            setInterval(() => {
+                const imagens = container.querySelectorAll('img');
+                if (imagens.length > 0) {
+                    imagens[indiceAtual].classList.remove('show');
+                    indiceAtual = (indiceAtual + 1) % imagens.length;
+                    imagens[indiceAtual].classList.add('show');
+                }
+            }, 4500); 
+        }
+    </script>
+</body>
+</html>
